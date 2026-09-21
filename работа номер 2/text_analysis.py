@@ -27,4 +27,6 @@ def fedos_mak_top_word(freq: dict[str, int]) -> "str | None":
     )
 
 
-print(fedos_mak_top_word(fedos_mak_count_word_frequencies(fedos_mak_split_words("Привет, мир! Привет... ФП — это полезно."))))
+print("Слова:", fedos_mak_split_words("Привет, мир! Привет... ФП — это полезно."))
+print("Частоты:", fedos_mak_count_word_frequencies(fedos_mak_split_words("Привет, мир! Привет... ФП — это полезно.")))
+print("Самое частое слово:", fedos_mak_top_word(fedos_mak_count_word_frequencies(fedos_mak_split_words("Привет, мир! Привет... ФП — это полезно."))))
