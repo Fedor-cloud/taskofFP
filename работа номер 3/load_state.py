@@ -50,3 +50,5 @@ def fedos_mak_load_users() -> FedosMakResult[list[FedosMakUser], str]:
 
 print("Состояния загрузки:", list(FedosMakLoadState))
 print("Результат загрузки:", fedos_mak_load_users())
+
+"""cee045e9ebfb99b520cd2e4b4629b282""" 
