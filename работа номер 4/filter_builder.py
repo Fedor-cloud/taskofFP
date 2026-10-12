@@ -31,3 +31,5 @@ print(
     "Числа больше 5:",
     list(filter(fedos_mak_greater_than(5), [1, 6, 8, 2, 9]))
 )
+
+"71cac7415394b4bc0efe0c87088731fa"
