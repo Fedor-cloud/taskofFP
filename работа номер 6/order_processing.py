@@ -14,16 +14,18 @@ ORDERS = [
     {"id": 2, "total": 3200, "status": "paid"},
     {"id": 3, "total": 0, "status": "cancelled"}
 ]
+
 # уровень 1—суммы заказов через map
 # суммы вычисляются только при переборе
 ORDER_TOTALS = lambda orders: map(lambda order: order["total"], orders)
 # уровень 3—поиск заказа по id и получение суммы
 # если заказ не найден next вернёт None
-FIND_ORDER = lambda orders, order_id: next(
+# первый вызов запоминает orders, второй запускает поиск
+FIND_ORDER = lambda orders: lambda order_id: next(
     filter(lambda order: order["id"] == order_id, orders), None
 )
-ORDER_TOTAL = lambda orders, order_id: (
-    OptionalBox(FIND_ORDER(orders, order_id)).map(lambda order: order["total"]).value   
+ORDER_TOTAL = lambda orders: lambda order_id: (
+    OptionalBox(FIND_ORDER(orders)(order_id)).map(lambda order: order["total"]).value
 )
 # уровень 4—законы тождества и композиции
 IDENTITY = lambda value: value
@@ -50,7 +52,16 @@ print("map для 10:", OptionalBox(10).map(lambda value: value + 1).value)
 print("map для None:", OptionalBox(None).map(lambda value: value + 1).value)
 
 # проверка уровня 3
-print("Заказ 2:", FIND_ORDER(ORDERS, 2))
-print("Заказ 99:", FIND_ORDER(ORDERS, 99))
-print("Сумма заказа 2:", ORDER_TOTAL(ORDERS, 2))
-print("Сумма заказа 99:", ORDER_TOTAL(ORDERS, 99))
+# сохраняем функции, поиск пока не выполняется
+
+FIND_BY_ID = FIND_ORDER(ORDERS)
+TOTAL_BY_ID = ORDER_TOTAL(ORDERS)
+
+
+# передаём id и запускаем вычисление
+print("Заказ 2:", FIND_BY_ID(2))
+print("Заказ 99:", FIND_BY_ID(99))
+print("Сумма заказа 2:", TOTAL_BY_ID(2))
+print("Сумма заказа 99:", TOTAL_BY_ID(99))
+print("Заказ 94:", FIND_BY_ID(94))
+# ab 6 зачтено 48b5bc5ea82bc934d927592d90184fc92774217df3e4122cfd69c0b414ca915e
