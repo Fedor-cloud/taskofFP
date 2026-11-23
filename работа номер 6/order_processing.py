@@ -15,14 +15,15 @@ ORDERS = [
     {"id": 3, "total": 0, "status": "cancelled"}
 ]
 # уровень 1—суммы заказов через map
-ORDER_TOTALS = lambda orders: list(map(lambda order: order["total"], orders))
+# суммы вычисляются только при переборе
+ORDER_TOTALS = lambda orders: map(lambda order: order["total"], orders)
 # уровень 3—поиск заказа по id и получение суммы
 # если заказ не найден next вернёт None
 FIND_ORDER = lambda orders, order_id: next(
     filter(lambda order: order["id"] == order_id, orders), None
 )
 ORDER_TOTAL = lambda orders, order_id: (
-    OptionalBox(FIND_ORDER(orders, order_id)).map(lambda order: order["total"]).value
+    OptionalBox(FIND_ORDER(orders, order_id)).map(lambda order: order["total"]).value   
 )
 # уровень 4—законы тождества и композиции
 IDENTITY = lambda value: value
@@ -42,7 +43,7 @@ print(
 )
 
 # проверка уровня 1
-print("Суммы:", ORDER_TOTALS(ORDERS))
+print("Суммы:", *ORDER_TOTALS(ORDERS))
 
 # проверка уровня 2
 print("map для 10:", OptionalBox(10).map(lambda value: value + 1).value)
